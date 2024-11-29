@@ -1,77 +1,71 @@
 # Zomato-EDA
+Resumen:
 
-Overview:
+El análisis de la API de Zomato es uno de los análisis más útiles para los amantes de la comida que quieren degustar las mejores cocinas de cada parte del mundo que se ajusten a su presupuesto. Este análisis también es para aquellos que quieren encontrar restaurantes que ofrezcan una buena relación calidad-precio en varias partes del país para las cocinas. Además, este análisis satisface las necesidades de las personas que se esfuerzan por obtener la mejor cocina del país y qué localidad de ese país ofrece esas cocinas con el mayor número de restaurantes.
 
-Zomato API Analysis is one of the most useful analysis for foodies who want to taste the best cuisines of every part of the world which lies in their budget. 
-This analysis is also for those who want to find the value for money restaurants in various parts of the country for the cuisines. Additionally, this analysis caters 
-the needs of people who are striving to get the best cuisine of the country and which locality of that country serves that cuisines with maximum number of restaurants.
+Realmente me fascina la buena calidad de la comida que se sirve en los restaurantes y me gustaría ayudar a la comunidad a encontrar las mejores cocinas en su área.
 
-I really get fascinated by good quality food being served in the restaurants and would like to help community find the best cuisines around their area.
+Acerca de este conjunto de datos:
 
+Los datos recopilados se han almacenado en el archivo de valores separados por comas Zomato.csv. Cada restaurante en el conjunto de datos se identifica de manera única por su Id de Restaurante. Cada restaurante contiene las siguientes variables:
 
-About this dataset:
+• Id de Restaurante: Id único de cada restaurante en varias ciudades del mundo
 
-The collected data has been stored in the Comma Separated Value file Zomato.csv. Each restaurant in the dataset is uniquely identified by its Restaurant Id. 
-Every Restaurant contains the following variables:
+• Nombre del Restaurante: Nombre del restaurante
 
-• Restaurant Id: Unique id of every restaurant across various cities of the world
+• Código del País: País en el que se encuentra el restaurante
 
-• Restaurant Name: Name of the restaurant
+• Ciudad: Ciudad en la que se encuentra el restaurante
 
-• Country Code: Country in which restaurant is located
+• Dirección: Dirección del restaurante
 
-• City: City in which restaurant is located
+• Localidad: Ubicación en la ciudad
 
-• Address: Address of the restaurant
+• Localidad Detallada: Descripción detallada de la localidad
 
-• Locality: Location in the city
+• Longitud: Coordenada de longitud de la ubicación del restaurante
 
-• Locality Verbose: Detailed description of the locality
+• Latitud: Coordenada de latitud de la ubicación del restaurante
 
-• Longitude: Longitude coordinate of the restaurant's location
+• Cocinas: Cocinas ofrecidas por el restaurante
 
-• Latitude: Latitude coordinate of the restaurant's location
+• Costo Promedio para dos: Costo para dos personas en diferentes monedas.
 
-• Cuisines: Cuisines offered by the restaurant
+• Moneda: Moneda del país
 
-• Average Cost for two: Cost for two people in different currencies.
+• Tiene Reserva de Mesa: sí/no
 
-• Currency: Currency of the country
+• Tiene Entrega a Domicilio: sí/no
 
-• Has Table booking: yes/no
+• Está entregando: sí/no
 
-• Has Online delivery: yes/ no
+• Cambiar a menú de pedidos: sí/no
 
-• Is delivering: yes/ no
+• Rango de precios: rango de precios de la comida
 
-• Switch to order menu: yes/no
+• Calificación Agregada: Calificación promedio de 5
 
-• Price range: range of price of food
+• Color de Calificación: dependiendo del color de la calificación promedio
 
-• Aggregate Rating: Average rating out of 5
+• Texto de Calificación: texto basado en la calificación
 
-• Rating color: depending upon the average rating color
+• Votos: Número de calificaciones emitidas por las personas
 
-• Rating text: text on the basis of rating of rating
+Inferencias:
 
-• Votes: Number of ratings casted by people
+• ¿Cómo varía el rango de precios de un restaurante con sus calificaciones?
 
+• ¿Cómo están distribuidos los restaurantes listados en Zomato por todo el mundo?
 
-Inferences:
+• ¿Cuántos restaurantes con una alta calificación tienen la opción de entrega a domicilio?
 
-•	How does the price range of a restaurant vary with its ratings?
+• ¿Los restaurantes que tienen un alto costo para dos, entregan en línea?
 
-•	How are the restaurants listed on Zomato distributed all around the globe?
+• ¿Cómo están distribuidas las calificaciones? ¿Cuántas calificaciones altas hay y viceversa?
 
-•	How many restaurants with a high rating have the option of online delivery?
+• ¿Qué país utiliza qué moneda?
 
-•	Do the restaurants which have high cost for two, deliver online?
+• ¿Cuál es el número de cocinas que tiene cada tipo de restaurante?
 
-•	How are the ratings distributed? How many number of high ratings are there and vice versa?
-
-•	Which country uses what Currency?
-
-•	What is the number of cuisines each type of restaurant has.
-
-•	What are the top five restaurants?
+• ¿Cuáles son los cinco mejores restaurantes?
 
