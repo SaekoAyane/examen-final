@@ -1,0 +1,128 @@
+#codigo 1
+# Importar librerías necesarias
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import classification_report, confusion_matrix
+from imblearn.over_sampling import SMOTE
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Paso 1: Cargar el archivo
+print("\n--- Cargando el archivo CSV ---")
+try:
+    df = pd.read_csv('restaurant_dataset.csv')  # Cambiar al nombre correcto
+    print("Dataset cargado con éxito. Primeras filas:")
+    print(df.head())
+except FileNotFoundError:
+    print("Error: Asegúrate de subir el archivo 'restaurant_dataset.csv'.")
+    raise
+
+# Paso 2: Verificar información básica
+print("\n--- Exploración del dataset ---")
+print(df.info())
+print("\nValores nulos por columna:")
+print(df.isnull().sum())
+
+# Paso 3: Preprocesamiento
+print("\n--- Preprocesamiento de datos ---")
+# Rellenar valores nulos
+if df.isnull().sum().any():
+    df.fillna(df.median(numeric_only=True), inplace=True)
+    print("Valores nulos rellenados con la mediana para columnas numéricas.")
+else:
+    print("No se encontraron valores nulos.")
+
+# Codificación de variables categóricas
+print("\nCodificando variables categóricas...")
+df_encoded = pd.get_dummies(df, drop_first=True)
+print("Codificación completada. Dimensiones del dataset codificado:", df_encoded.shape)
+
+# Paso 4: Preparar características y variable objetivo
+print("\n--- Separando características y variable objetivo ---")
+target_column = 'target_column'  # Cambia este nombre por el correcto
+if target_column not in df_encoded.columns:
+    print(f"Error: La columna objetivo '{target_column}' no existe en el dataset.")
+    print("Columnas disponibles:", df_encoded.columns)
+    raise ValueError("Nombre de columna objetivo incorrecto.")
+
+X = df_encoded.drop(target_column, axis=1)
+y = df_encoded[target_column]
+
+# Paso 5: Balanceo con SMOTE
+print("\n--- Aplicando SMOTE para balancear las clases ---")
+try:
+    smote = SMOTE(random_state=42)
+    X_balanced, y_balanced = smote.fit_resample(X, y)
+    print("Balanceo completado. Distribución de clases después del balanceo:")
+    print(pd.Series(y_balanced).value_counts())
+except ValueError as e:
+    print("Error en SMOTE:", e)
+    raise
+
+# Paso 6: División de datos
+print("\n--- Dividiendo los datos (80% entrenamiento, 20% prueba) ---")
+X_train, X_test, y_train, y_test = train_test_split(X_balanced, y_balanced, test_size=0.2, random_state=42)
+
+# Paso 7: Entrenar modelo de Árbol de Decisión
+print("\n--- Entrenando modelo de Árbol de Decisión ---")
+clf = DecisionTreeClassifier(random_state=42)
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+
+# Evaluación del modelo
+print("\n--- Evaluación del modelo ---")
+print("Matriz de confusión:")
+print(confusion_matrix(y_test, y_pred))
+print("\nReporte de clasificación:")
+print(classification_report(y_test, y_pred))
+
+# Visualizar matriz de confusión
+sns.heatmap(confusion_matrix(y_test, y_pred), annot=True, fmt='d', cmap='Blues')
+plt.title("Matriz de Confusión")
+plt.ylabel("Etiqueta verdadera")
+plt.xlabel("Etiqueta predicha")
+plt.show()
+
+# Paso 8: PCA (Análisis de Componentes Principales)
+print("\n--- Reducción de dimensionalidad con PCA ---")
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X_balanced)
+
+explained_variances = []
+for n in [12, 10, 11, 9, 5, 3]:
+    pca = PCA(n_components=n)
+    X_pca = pca.fit_transform(X_scaled)
+    explained_variance = sum(pca.explained_variance_ratio_)
+    explained_variances.append((n, explained_variance))
+    print(f"Varianza explicada con {n} componentes: {explained_variance:.4f}")
+
+# Visualización de PCA
+components, variances = zip(*explained_variances)
+plt.plot(components, variances, marker='o')
+plt.title("Varianza Explicada vs Número de Componentes PCA")
+plt.xlabel("Número de Componentes")
+plt.ylabel("Varianza Explicada")
+plt.grid()
+plt.show()
+
+# Paso 9: K-means Clustering
+print("\n--- Clustering no supervisado con K-means ---")
+kmeans = KMeans(n_clusters=3, random_state=42)
+clusters = kmeans.fit_predict(X_scaled)
+print("Asignaciones de clústeres:", np.unique(clusters, return_counts=True))
+
+# Visualizar clústeres
+if X_scaled.shape[1] >= 2:
+    plt.scatter(X_pca[:, 0], X_pca[:, 1], c=clusters, cmap='viridis', alpha=0.7)
+    plt.title("Clústeres visualizados (K-means)")
+    plt.xlabel("Componente Principal 1")
+    plt.ylabel("Componente Principal 2")
+    plt.colorbar(label="Clúster")
+    plt.show()
+else:
+    print("No se pueden visualizar clústeres en menos de 2 dimensiones.")
